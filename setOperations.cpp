@@ -1,4 +1,4 @@
-#include "SetOperations.h"
+#include "setOperations.h"
 #include <iostream>
 using namespace std;
 

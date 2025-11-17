@@ -3,7 +3,7 @@
 #define STUDENTGROUP_H
 
 #include <string>
-#include "Student.h"
+#include "student.h"
 #include "course.h"
 using namespace std;
 

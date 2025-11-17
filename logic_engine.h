@@ -30,6 +30,8 @@ public:
         const string& assignedLab);
 
     void printRules();
+    int getRuleCount();      
+    Rule getRule(int index);
 };
 
 #endif

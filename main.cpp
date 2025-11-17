@@ -1,9 +1,10 @@
 ﻿#include "course.h"
-#include "Student.h"
+#include "student.h"
 #include "StudentGroup.h"
 #include "logic_engine.h"
-#include "SetOperations.h"
-#include "SetOperationsH.h"
+#include "setOperations.h"
+#include "setOperationsH.h"
+#include "RelationModule.h"
 #include <iostream>
 using namespace std;
 
@@ -142,6 +143,64 @@ int main() {
     p_in.print();
     cout << "Room Intersection: ";
     r_in.print();
+    //6 Module
+    StudentCourse sc[50];
+    int scCount = 0;
+    
+    for (int i = 0; i < count; i++) {
+        Student* s = list[i];
+        for (int j = 0; j < s->getCompletedCount(); j++) {
+            sc[scCount].student = s;
+            sc[scCount].course  = s->getCompletedCourses()[j];  // string = string
+            scCount++;
+        }
+    }
+    FacultyCourse fc[50];
+    int fcCount = 0;
+    
+    for (int i = 0; i < engine.getRuleCount(); i++) {
+        fc[fcCount].faculty = engine.getRule(i).conditionProfessor;
+        fc[fcCount].course = engine.getRule(i).conditionCourse;
+        fcCount++;
+    }
+    
+
+    CourseRoom cr[50];
+    int crCount = 0;
+    
+    for (int i = 0; i < engine.getRuleCount(); i++) {
+        cr[crCount].course = engine.getRule(i).conditionCourse;
+        cr[crCount].room   = engine.getRule(i).enforcedLab;
+        crCount++;
+    }
+    
+
+    // Compose relations
+    RelationsModule relModule;
+    StudentRoom sr[50]; int srCount;
+    relModule.composeStudentCourseRoom(sc, scCount, cr, crCount, sr, srCount, 50);
+
+    FacultyRoom fr[50]; int frCount;
+    relModule.composeFacultyCourseRoom(fc, fcCount, cr, crCount, fr, frCount, 50);
+
+    // Detect conflicts
+    relModule.detectStudentConflict(sr, srCount);
+    relModule.detectFacultyConflict(fr, frCount);
+
+    // Check properties
+    if (relModule.isReflexive(sc, scCount, list, count))
+     cout << "Student-Course is reflexive\n";
+    if (relModule.isSymmetric(sc, scCount)) 
+    cout << "Student-Course is symmetric\n";
+    if (relModule.isTransitive(sc, scCount)) 
+    cout << "Student-Course is transitive\n";
+    if (relModule.isEquivalence(sc, scCount, list, count))
+     cout << "Student-Course is equivalence\n";
+    if (relModule.isPartialOrder(sc, scCount, list, count))
+     cout << "Student-Course is partial order\n";
+
+    for (int i = 0; i < count; i++)
+     delete list[i];
 
     return 0;
 }

@@ -49,3 +49,10 @@ void LogicEngine::printRules() {
     }
     
 }
+int LogicEngine::getRuleCount() const {
+    return ruleCount;
+}
+
+Rule LogicEngine::getRule(int index) const {
+    return rules[index];
+}
