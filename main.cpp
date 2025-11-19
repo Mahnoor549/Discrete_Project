@@ -5,6 +5,8 @@
 #include "setOperations.h"
 #include "setOperationsH.h"
 #include "RelationModule.h"
+#include "ConsistencyChecker.h"
+#include "Benchmark.h"
 #include <iostream>
 using namespace std;
 
@@ -55,6 +57,9 @@ int main() {
 
     //module4
     LogicEngine engine;
+
+    ConsistencyChecker checker(&sg, &cs, &engine);
+    Benchmark bench(&sg, &cs, &engine);
 
     engine.addRule("CS101", "Adeel", "LabA");
     engine.addRule("CS102", "DrKhan", "LabC");
