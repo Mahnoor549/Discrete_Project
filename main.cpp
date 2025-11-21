@@ -7,6 +7,9 @@
 #include "RelationModule.h"
 #include "ConsistencyChecker.h"
 #include "Benchmark.h"
+#include "CLI.h"
+#include "Tests.h"
+
 #include <iostream>
 using namespace std;
 
@@ -60,6 +63,8 @@ int main() {
 
     ConsistencyChecker checker(&sg, &cs, &engine);
     Benchmark bench(&sg, &cs, &engine);
+    CLI cli(&sg, &cs, &engine, &checker, &bench);
+    Tests tests;
 
     engine.addRule("CS101", "Adeel", "LabA");
     engine.addRule("CS102", "DrKhan", "LabC");
@@ -207,5 +212,9 @@ int main() {
     for (int i = 0; i < count; i++)
      delete list[i];
 
+
+     checker.runAllChecks();
+    bench.runAllBenchmarks();
+    tests.runAllTests();
     return 0;
 }
